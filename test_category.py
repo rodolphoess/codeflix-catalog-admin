@@ -12,8 +12,12 @@ class TestCategory:
             Category()
 
     def test_name_must_have_less_than_255_characters(self):
-        with pytest.raises(ValueError, match="name must have less than 256 characters"):
+        with pytest.raises(ValueError, match="name cannot be longer than 255"):
             Category("a" * 256)
+    
+    def test_category_name_cannot_be_created_empty(self):
+        with pytest.raises(ValueError, match="name cannot be empty"):
+            Category(name="")
 
     def test_category_must_be_created_with_id_as_uuid(self):
         category = Category(name="Filme")
@@ -76,5 +80,11 @@ class TestUpdateCategory:
     def test_update_category_with_invalid_name_raises_exception(self):
         category = Category(name="Filme", description="Filmes em geral")
 
-        with pytest.raises(ValueError, match="name must have less than 256 characters"):
+        with pytest.raises(ValueError, match="name cannot be longer than 255"):
             category.update_category(name="a" * 256, description="Séries em geral")
+
+    def test_update_category_name_with_empty_name_raises_exception(self):
+        category = Category(name="Filme", description="Filmes em geral")
+
+        with pytest.raises(ValueError, match="name cannot be empty"):
+            category.update_category(name="", description="Séries em geral")
