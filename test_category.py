@@ -17,26 +17,31 @@ class TestCategory:
 
     def test_category_must_be_created_with_id_as_uuid(self):
         category = Category(name="Filme")
+
         assert isinstance(category.id, UUID)
 
     def test_created_category_with_default_values(self):
         category = Category(name="Filme")
+
         assert category.name == "Filme"
         assert category.description == ""
         assert category.is_active is True
 
     def test_category_is_created_as_active_by_default(self):
         category = Category(name="Filme")
+
         assert category.is_active is True
 
     def test_category_is_created_with_provided_values(self):
         new_id = uuid.uuid4()
+
         category = Category(
             id=new_id,
             name="Filme",
             description="Filmes em geral",
             is_active=False
         )
+
         assert category.id == new_id
         assert category.name == "Filme"
         assert category.description == "Filmes em geral"
@@ -44,15 +49,32 @@ class TestCategory:
 
     def test_category_when_str_is_calling(self):
         category = Category(name="Filme", description="Filmes em geral", is_active=True)
+        
         output = str(category)
         print("teste str ", output)
-        # self.assertEquals(output, f"{category.name} - {category.description} ({category.is_active})")
+
+        assert output == f"{category.name} - {category.description} ({category.is_active})"
 
     def test_category_when_repr_is_calling(self):
         category = Category(name="Filme")
+
         output = repr(category)
         print("teste repr ", output)
-        # self.assertEquals(output, f"<Category {category.name} ({category.id})>")
 
-if __name__ == "__main__":
-    unittest.main()
+        assert output == f"<Category {category.name} ({category.id})>"
+
+
+class TestUpdateCategory:
+    def test_update_category_with_name_and_description(self):
+        category = Category(name="Filme", description="Filmes em geral")
+
+        category.update_category(name="Série", description="Séries em geral")
+
+        assert category.name == "Série"
+        assert category.description == "Séries em geral"
+
+    def test_update_category_with_invalid_name_raises_exception(self):
+        category = Category(name="Filme", description="Filmes em geral")
+
+        with pytest.raises(ValueError, match="name must have less than 256 characters"):
+            category.update_category(name="a" * 256, description="Séries em geral")

@@ -16,8 +16,15 @@ class Category:
         if len(self.name) > 255:
             raise ValueError("name must have less than 256 characters")
 
-def __str__(self):
-    return f"{self.name} - {self.description} ({self.is_active})"
+    def __str__(self):
+        return f"{self.name} - {self.description} ({self.is_active})"
 
-def __repr__(self):
-    return f"<Category {self.name} ({self.id})>"
+    def __repr__(self):
+        return f"<Category {self.name} ({self.id})>"
+
+    def update_category(self, name, description):
+        self.name = name
+        self.description = description
+
+        if len(self.name) > 255:
+            raise ValueError("name must have less than 256 characters")
