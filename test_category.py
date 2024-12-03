@@ -88,3 +88,25 @@ class TestUpdateCategory:
 
         with pytest.raises(ValueError, match="name cannot be empty"):
             category.update_category(name="", description="Séries em geral")
+
+class TestActivate:
+    def test_activate_inactive_category(self):
+        category = Category(name="Filme", description="Filmes em geral", is_active=False)
+
+        category.activate()
+
+        assert category.is_active is True
+
+    def test_activate_active_category(self):
+        category = Category(name="Filme", description="Fiomes em geral", is_active=True)
+
+        category.activate()
+
+        assert category.is_active is True
+
+    def test_deactivate_active_category(self):
+        category = Category(name="Filme", description="Fiomes em geral", is_active=True)
+
+        category.deactivate()
+
+        assert category.is_active is False
